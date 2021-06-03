@@ -112,6 +112,36 @@ def getresult(nik):
         cursor.close()
         conn.close()
 
+@app.route('/addresult', methods=['POST'])
+def add_result():
+    conn = None
+    cursor = None
+    try:
+        _json = request.json
+        _provinsi = _json['provinsi']
+        _kabkota = _json['kabkota']
+        _kecamatan = _json['kecamatan']
+        _desa = _json['desa']
+        _nik = _json['nik']
+        _nama = _json['nama']
+        _penerima = _json['penerima']
+        if _provinsi and _kabkota and _kecamatan and _desa and _nik and _nama and _penerima and request.method == 'POST':
+            sql = "INSERT INTO result(Provinsi, KabKota, Kecamatan, Desa, NIK, Nama, PenerimaBansos) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            data = (_provinsi, _kabkota, _kecamatan, _desa, _nik, _nama, _penerima)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            resp = jsonify('Data added successfully!')
+            resp.status_code = 200
+            return resp
+        else:
+            return not_found()
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
 @app.errorhandler(404)
 def not_found(error=None):
@@ -126,4 +156,4 @@ def not_found(error=None):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)
