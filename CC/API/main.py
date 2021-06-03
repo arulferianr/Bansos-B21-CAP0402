@@ -23,7 +23,7 @@ def dataset():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT No no, Provinsi provinsi, KabKota kabkota,Kecamatan kecamatan, Desa desa, NIK nik, Nama nama FROM dataset")
+        cursor.execute("SELECT No no, Provinsi provinsi, KabKota kabkota,Kecamatan kecamatan, Desa desa, NIK nik, Nama nama, PenghasilanBulanan penghasilan, JumlahTanggungJawab jmltj, Umur umur, IbuHamil ibuhamil, LanjutUsia lansia, Disabilitas disable, JumlahMotor jmlmtr, JumlahMobil jmlmob, BPNT bpnt, BST bst, PKH pkh FROM dataset")
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
